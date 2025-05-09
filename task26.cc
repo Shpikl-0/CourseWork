@@ -1,6 +1,9 @@
 #include <iostream>
 using namespace std;
 
+const string COLOR = "\033[30;47m";
+const string RESET = "\033[0m";
+
 int main()
 {
     int matrix[9][9] = {{1,1,4,3,4,1,3,2,2},
@@ -17,7 +20,7 @@ int main()
     {
         for(int j = 0; j < 9; j++)
         {
-            cout << matrix[i][j] << " ";
+            cout << COLOR << matrix[i][j] << " " << RESET;
         }
         cout << '\n';
     }
