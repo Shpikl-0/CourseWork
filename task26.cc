@@ -86,7 +86,7 @@ void finder(int matrix[ROWS][COLS],bool marks[ROWS][COLS])
 
             if(count > 1)
             {
-                for (int x = 0; x < count; x++)
+                for (int x = 1; x < count; x++)
                 {
                     if(canMark(i, indices[x], marks))
                         marks[indices[x]][j] = true;
