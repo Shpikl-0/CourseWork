@@ -7,6 +7,29 @@ const int ROWS = 9;
 const string COLOR = "\033[30;47m";
 const string RESET = "\033[0m";
 
+bool canMark(int row, int col, bool marks[ROWS][COLS])
+{
+    int unmarkedInRow = 0;
+    for (int j = 0; j < COLS; j++)
+    {
+        if(!marks[row][j] && j != col)
+            unmarkedInRow++;
+    }
+    if(unmarkedInRow == 0)
+        return false;
+
+    int unmarkedInCol = 0;
+    for (int i = 0; i < ROWS; i++)
+    {
+        if(!marks[i][col] && i != row)
+            unmarkedInCol++;
+    }
+    if(unmarkedInCol == 0)
+        return false;
+
+    return true;
+}
+
 void finder(int matrix[ROWS][COLS],bool marks[ROWS][COLS])
 {
     for (int i = 0; i < ROWS; i++)
@@ -34,7 +57,8 @@ void finder(int matrix[ROWS][COLS],bool marks[ROWS][COLS])
             {
                 for (int x = 1; x < count; x++)
                 {
-                    marks[i][indices[x]] = true;
+                    if(canMark(i, indices[x], marks))
+                        marks[i][indices[x]] = true;
                 }
             }
         }
@@ -64,7 +88,8 @@ void finder(int matrix[ROWS][COLS],bool marks[ROWS][COLS])
             {
                 for (int x = 0; x < count; x++)
                 {
-                    marks[indices[x]][j] = true;
+                    if(canMark(i, indices[x], marks))
+                        marks[indices[x]][j] = true;
                 }
             }
         }   
@@ -91,12 +116,9 @@ int main()
     {
         for(int j = 0; j < COLS; j++)
         {   
-            if(marks[i][j])
-                cout << COLOR << matrix[i][j] << RESET <<'\t';
-            else
-                cout << matrix[i][j] <<'\t';
+            cout << (marks[i][j] ? RESET : COLOR) << matrix[i][j] << ' ';
         }
-        cout << '\n';
+        cout << RESET << '\n';
     }
     return 0;
 }
