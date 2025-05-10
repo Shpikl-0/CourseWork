@@ -39,6 +39,36 @@ void finder(int matrix[ROWS][COLS],bool marks[ROWS][COLS])
             }
         }
     }
+
+    for (int j = 0; j < COLS; j++)
+    {
+        bool visited[ROWS] = {};
+
+        for (int i = 0; i < ROWS; i++)
+        {
+            if(visited[i])
+                continue;
+            int count = 0;
+            int indices[ROWS];
+
+            for (int k = 0; k < ROWS; k++)
+            {
+                if(matrix[i][j] == matrix[k][j])
+                {
+                    indices[count++] = k;
+                    visited[k] = true;
+                }
+            }
+
+            if(count > 1)
+            {
+                for (int x = 0; x < count; x++)
+                {
+                    marks[indices[x]][j] = true;
+                }
+            }
+        }   
+    }
 }
 
 int main()
