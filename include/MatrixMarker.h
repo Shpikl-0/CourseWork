@@ -1,18 +1,22 @@
-#pragma once
+#ifndef MATRIX_MARKER_H
+#define MATRIX_MARKER_H
+
 #include "Config.h"
-#include <string>
+#include <iostream>
 
 class MatrixMarker {
-public:
-    MatrixMarker(int input[Config::ROWS][Config::COLS]);
-    void process();
-    void print() const;
-
 private:
-    int matrix[Config::ROWS][Config::COLS];
-    bool marks[Config::ROWS][Config::COLS];
+    int matrix[ROWS][COLS];
+    bool marks[ROWS][COLS];
 
     bool canMark(int row, int col);
     void findDuplicatesInRows();
     void findDuplicatesInCols();
+
+public:
+    MatrixMarker(int input[ROWS][COLS]);
+    void process();
+    void print() const;
 };
+
+#endif // MATRIX_MARKER_H
