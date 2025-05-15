@@ -7,16 +7,16 @@
 class MatrixMarker {
 private:
     int matrix[ROWS][COLS];
-    bool marks[ROWS][COLS];
+    bool marked[ROWS][COLS];
 
-    bool canMark(int row, int col);
-    void findDuplicatesInRows();
-    void findDuplicatesInCols();
+    bool isMarkAllowed(int row, int col);
+    void markRowDuplictes();
+    void markColumnDuplicates();
 
 public:
     MatrixMarker(int input[ROWS][COLS]);
-    void process();
+    void run();
     void print() const;
 };
 
-#endif // MATRIX_MARKER_H
+#endif

@@ -3,10 +3,12 @@
 
 #include <string>
 
+using namespace std;
+
 const int ROWS = 9;
 const int COLS = 9;
 
-const std::string COLOR = "\033[30;47m";
-const std::string RESET = "\033[0m";
+const string COLOR = "\033[30;47m";
+const string RESET = "\033[0m";
 
-#endif // CONFIG_H
+#endif 

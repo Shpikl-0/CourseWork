@@ -1,7 +1,11 @@
 #include "../include/MatrixMarker.h"
+using namespace std;
+
+void option(int choice, MatrixMarker marker);
 
 int main() {
-    int input[ROWS][COLS] = {
+    int choice;
+    int Matrix[ROWS][COLS] = {
         {1,1,4,3,4,1,3,2,2},
         {1,1,2,3,2,1,3,2,2},
         {3,2,1,4,3,3,2,1,3},
@@ -13,15 +17,53 @@ int main() {
         {4,4,2,1,1,1,2,3,3}
     };
 
-    MatrixMarker marker(input);
+    MatrixMarker marker(Matrix);
 
-    std::cout << "Before:\n";
-    marker.print();
+    cout << "This program can color the cells of a matrix so that there\nis at least 1 non-colored element in each column and row\n";
 
-    marker.process();
+    while(choice != 3)
+    { 
+        cout << "Menu:\n"
+            << "1.Show initial matrix\n"
+            << "2.Convert matrix\n"
+            << "3.Exit\n";
 
-    std::cout << "\nAfter:\n";
-    marker.print();
+        do{
+            cout << "Choice the option: ";
+            cin  >> choice;
+
+            
+            if (cin.fail()) {
+                cin.clear();                
+                cin.ignore(1000, '\n');    
+                cout << "Invalid input! Please enter a number.\n";
+                continue;
+            }
+
+            if(choice == 1 || choice == 2 || choice == 3)
+                break;
+            cout << "Wrong choice, choose existing option!\n";
+        }while(1);
+
+        option(choice, marker);
+    }
 
     return 0;
+}
+
+void option(int choice, MatrixMarker marker){
+    switch (choice){
+        case 1:
+            cout << "Initial matrix:\n";
+            marker.print();
+            break;
+        case 2:
+            cout << "\nConvert matrix:\n";
+            marker.run(); 
+            marker.print();
+            break;
+        case 3:
+            cout << "The program ends";
+            break;
+    }
 }

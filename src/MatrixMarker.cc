@@ -1,28 +1,30 @@
 #include "MatrixMarker.h"
+#include <iomanip>
+using namespace std;
 
 MatrixMarker::MatrixMarker(int input[ROWS][COLS]) {
     for (int i = 0; i < ROWS; ++i)
         for (int j = 0; j < COLS; ++j) {
             matrix[i][j] = input[i][j];
-            marks[i][j] = false;
+            marked[i][j] = false;
         }
 }
 
-bool MatrixMarker::canMark(int row, int col) {
+bool MatrixMarker::isMarkAllowed(int row, int col) {
     int unmarkedInRow = 0;
     for (int j = 0; j < COLS; ++j)
-        if (!marks[row][j] && j != col)
+        if (!marked[row][j] && j != col)
             ++unmarkedInRow;
     if (unmarkedInRow == 0) return false;
 
     int unmarkedInCol = 0;
     for (int i = 0; i < ROWS; ++i)
-        if (!marks[i][col] && i != row)
+        if (!marked[i][col] && i != row)
             ++unmarkedInCol;
     return unmarkedInCol != 0;
 }
 
-void MatrixMarker::findDuplicatesInRows() {
+void MatrixMarker::markRowDuplictes() {
     for (int i = 0; i < ROWS; ++i) {
         bool visited[COLS] = {};
         for (int j = 0; j < COLS; ++j) {
@@ -37,13 +39,13 @@ void MatrixMarker::findDuplicatesInRows() {
 
             if (count > 1)
                 for (int x = 1; x < count; ++x)
-                    if (canMark(i, indices[x]))
-                        marks[i][indices[x]] = true;
+                    if (isMarkAllowed(i, indices[x]))
+                        marked[i][indices[x]] = true;
         }
     }
 }
 
-void MatrixMarker::findDuplicatesInCols() {
+void MatrixMarker::markColumnDuplicates() {
     for (int j = 0; j < COLS; ++j) {
         bool visited[ROWS] = {};
         for (int i = 0; i < ROWS; ++i) {
@@ -58,21 +60,62 @@ void MatrixMarker::findDuplicatesInCols() {
 
             if (count > 1)
                 for (int x = 1; x < count; ++x)
-                    if (canMark(indices[x], j))
-                        marks[indices[x]][j] = true;
+                    if (isMarkAllowed(indices[x], j))
+                        marked[indices[x]][j] = true;
         }
     }
 }
 
-void MatrixMarker::process() {
-    findDuplicatesInRows();
-    findDuplicatesInCols();
+void MatrixMarker::run() {
+    markRowDuplictes();
+    markColumnDuplicates();
+}
+
+
+string centerText(int number, int width) {
+    string str = to_string(number);
+    int padding = width - static_cast<int>(str.length());
+    int padLeft = padding / 2;
+    int padRight = padding - padLeft;
+    return string(padLeft, ' ') + str + string(padRight, ' ');
+}
+
+void printHorizontalLine(int cols, int cellWidth) {
+    for (int i = 0; i < cols; ++i) {
+        cout << "+";
+        for (int j = 0; j < cellWidth; ++j)
+            cout << "-";
+    }
+    cout << "+\n";
 }
 
 void MatrixMarker::print() const {
+    const int cellWidth = 8;
+    const int cellHeight = 3;
+
     for (int i = 0; i < ROWS; ++i) {
-        for (int j = 0; j < COLS; ++j)
-            std::cout << (marks[i][j] ? RESET : COLOR) << matrix[i][j] << ' ';
-        std::cout << RESET << '\n';
+        printHorizontalLine(COLS, cellWidth);
+
+        for (int h = 0; h < cellHeight; ++h) {
+            for (int j = 0; j < COLS; ++j) {
+                cout << "|";
+                bool isHighlighted = !marked[i][j];
+                string content;
+
+                if (h == cellHeight / 2) {
+                    content = centerText(matrix[i][j], cellWidth);
+                } else {
+                    content = string(cellWidth, ' ');
+                }
+
+                if (isHighlighted)
+                    cout << COLOR << content << RESET;
+                else
+                    cout << content;
+            }
+            cout << "|\n";
+        }
     }
+
+    printHorizontalLine(COLS, cellWidth);
 }
