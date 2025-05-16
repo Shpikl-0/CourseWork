@@ -1,22 +1,41 @@
+/*
+Заголовковий файл "MatrixMarker.h" який оголощує клас і його методи
+для подальшого реалізації і використання 
+*/
+
+/*
+Використовую "include guard" для того, щоб уникнути потенційних помилок
+з подвійним підключенням заголовкового файлу при компіляції 
+*/
 #ifndef MATRIX_MARKER_H
 #define MATRIX_MARKER_H
 
+/*
+Підключаю заголовковий файл "Config.h" для того аби отримати доступ до
+створених констант.
+Також підключаю стандартну бібліотеку для роботи з потоками вводу/виводу
+*/
 #include "Config.h"
 #include <iostream>
 
+/*
+Оголошення головного класу "MatrixMarker", який забезпечує роботу з 
+матрицею та реалізує основну логіку програми
+*/
 class MatrixMarker {
-private:
-    int matrix[ROWS][COLS];
-    bool marked[ROWS][COLS];
 
-    bool isMarkAllowed(int row, int col);
-    void markRowDuplictes();
-    void markColumnDuplicates();
+private:
+    int matrix[ROWS][COLS];//Почаквоа матриця з числами
+    bool marked[ROWS][COLS];//Масив, що відмічає позначені елементи
+
+    bool isMarkAllowed(int row, int col);//Перевіряє чи можна позначити елемент у позиції
+    void markRowDuplictes();//Перевіряє дублікати у рядках
+    void markColumnDuplicates();//Перевіряє дублікати у стовпцях
 
 public:
-    MatrixMarker(int input[ROWS][COLS]);
-    void run();
-    void print() const;
+    MatrixMarker(int input[ROWS][COLS]);// конструктор, що приймає матрицю для роботи з нею
+    void run();//Запуск програми з основною логікою
+    void print() const;//Вивід поточного вигляду матриці
 };
 
-#endif
+#endif//Закриття блоку захисту від подвійного підключення
