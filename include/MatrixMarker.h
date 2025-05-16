@@ -25,17 +25,17 @@
 class MatrixMarker {
 
 private:
-    int matrix[ROWS][COLS];//Почаквоа матриця з числами
-    bool marked[ROWS][COLS];//Масив, що відмічає позначені елементи
+    int matrix[ROWS][COLS];     //Почаквоа матриця з числами
+    bool marked[ROWS][COLS];    //Масив, що відмічає позначені елементи
 
-    bool isMarkAllowed(int row, int col);//Перевіряє чи можна позначити елемент у позиції
-    void markRowDuplictes();//Перевіряє дублікати у рядках
-    void markColumnDuplicates();//Перевіряє дублікати у стовпцях
+    bool isMarkAllowed(int row, int col);   //Перевіряє чи можна позначити елемент у позиції
+    void markRowDuplictes();                //Перевіряє дублікати у рядках
+    void markColumnDuplicates();            //Перевіряє дублікати у стовпцях
 
 public:
-    MatrixMarker(int input[ROWS][COLS]);// конструктор, що приймає матрицю для роботи з нею
-    void run();//Запуск програми з основною логікою
-    void print() const;//Вивід поточного вигляду матриці
+    MatrixMarker(int input[ROWS][COLS]);    // конструктор, що приймає матрицю для роботи з нею
+    void run();                             //Запуск програми з основною логікою
+    void print() const;                     //Вивід поточного вигляду матриці
 };
 
-#endif//Закриття блоку захисту від подвійного підключення
+#endif  //Закриття блоку захисту від подвійного підключення

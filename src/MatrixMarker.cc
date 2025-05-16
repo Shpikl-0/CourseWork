@@ -1,7 +1,24 @@
+/*
+У файлі "MatrixMarker.cc" реалізуються методи класу MatrixMarker який 
+забезпечує роботу з матрицею, пошук дублікатів та їх позначення,
+а також вивід таблиці з відповідно зафарбованими клітинками
+*/
+
+
+/*  
+Підключаємо заголовковий файл "MatrixMarker.h" у якому оголошено наш 
+клас і всі його методи.
+Також підключаємо стандартну бібліотеку для використання прапорців і
+створення маніпуляторів потоку виводу
+*/
 #include "MatrixMarker.h"
 #include <iomanip>
 using namespace std;
 
+/*
+Конструктор класу MatrixMarker, який копіює передану матрицю в поле класу 
+і ініціалізує масив marked значенням false
+*/
 MatrixMarker::MatrixMarker(int input[ROWS][COLS]) {
     for (int i = 0; i < ROWS; ++i)
         for (int j = 0; j < COLS; ++j) {
@@ -10,6 +27,12 @@ MatrixMarker::MatrixMarker(int input[ROWS][COLS]) {
         }
 }
 
+/* 
+Метод, що перевіряє чи можно зафарбувати елемент за індексом 
+по рядку та стовпцю. Перевірка відбувається проходженням по 
+рядку і стовпцю в пошуках хоча б одного незафарбованого 
+елемента окрім даного елемента
+*/
 bool MatrixMarker::isMarkAllowed(int row, int col) {
     int unmarkedInRow = 0;
     for (int j = 0; j < COLS; ++j)
@@ -24,6 +47,14 @@ bool MatrixMarker::isMarkAllowed(int row, int col) {
     return unmarkedInCol != 0;
 }
 
+
+/* 
+Метод позначає дублікат у рядках матриці.
+Для кожного рядка виконується пошук однакових за
+значенням елементів, позначаються всі дублікати,
+окрім одного, якщо позначення дозволене (Перевірка
+здійсньється методом isMarkAllowed)
+*/
 void MatrixMarker::markRowDuplictes() {
     for (int i = 0; i < ROWS; ++i) {
         bool visited[COLS] = {};
@@ -45,6 +76,13 @@ void MatrixMarker::markRowDuplictes() {
     }
 }
 
+/* 
+Метод позначає дублікат у стовпцях матриці.
+Для кожного стовпця виконується пошук однакових за
+значенням елементів, позначаються всі дублікати,
+окрім одного, якщо позначення дозволене (Перевірка
+відубувається методом isMarkAllowed)
+*/
 void MatrixMarker::markColumnDuplicates() {
     for (int j = 0; j < COLS; ++j) {
         bool visited[ROWS] = {};
@@ -66,12 +104,19 @@ void MatrixMarker::markColumnDuplicates() {
     }
 }
 
+/*
+Запуск алгоритма проходження по матриці
+в пошуках дублікатів у рядках і стовпцях
+*/
 void MatrixMarker::run() {
     markRowDuplictes();
     markColumnDuplicates();
 }
 
-
+/* 
+Функція для вирівнювання по центру числу у рядку
+заданої ширини
+*/
 string centerText(int number, int width) {
     string str = to_string(number);
     int padding = width - static_cast<int>(str.length());
@@ -80,6 +125,9 @@ string centerText(int number, int width) {
     return string(padLeft, ' ') + str + string(padRight, ' ');
 }
 
+/*
+Функція, що виводить горизонтальну грань матриці
+*/
 void printHorizontalLine(int cols, int cellWidth) {
     for (int i = 0; i < cols; ++i) {
         cout << "+";
@@ -89,6 +137,13 @@ void printHorizontalLine(int cols, int cellWidth) {
     cout << "+\n";
 }
 
+/*
+Метод, що виводить матрицю у відформатованому вигляді
+для граного та візуально зрозумілого подання. Вивід відбувається за
+такою логікою - непозначені елементи виводяться з
+використанням кольору, а позначені виводяться у
+звичайному чорному вигляді
+*/
 void MatrixMarker::print() const {
     const int cellWidth = 8;
     const int cellHeight = 3;
